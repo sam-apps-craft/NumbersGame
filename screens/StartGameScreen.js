@@ -32,8 +32,8 @@ function StartGameScreen({ onPickNumber }) {
 
   return (
     <View style={styles.rootContainer}>
-      <Title> Guess The Number ? </Title>
-     
+      <Title> Guess The Number </Title>
+      <Card>
         <InstructionText>Enter your Number</InstructionText>
         <TextInput
           style={styles.numberInput}
@@ -53,7 +53,7 @@ function StartGameScreen({ onPickNumber }) {
             <PrimaryButton onPress={confirmInputhandler}>Confirm</PrimaryButton>
           </View>
         </View>
-    
+      </Card>
     </View>
   );
 }

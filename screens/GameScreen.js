@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { View, StyleSheet, Alert } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons"; 
 
 import Title from "./components/ui/Title";
 import NumberContainer from "./components/game/NumberContainer.js";
@@ -61,17 +62,23 @@ function GameScreen({ userNumber, onGameOver }) {
     <View style={styles.screen}>
       <Title> Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-   
-        <InstructionText>Higher or lower ?</InstructionText>
-        <View>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-            +
-          </PrimaryButton>
+      <Card>
+        <InstructionText style={styles.instructionsText}>
+          Higher or lower ?
+        </InstructionText>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              <Ionicons name="remove-circle-sharp" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              <Ionicons name="add-circle-sharp" size={24} color="white" />
+            </PrimaryButton>
+          </View>
         </View>
-      
+      </Card>
     </View>
   );
 }
@@ -82,5 +89,16 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 22,
+  },
+  instructionsText:{
+    marginBottom: 12
+  }, 
+
+  buttonsContainer: {
+    flexDirection: "row",
+  },
+
+  buttonContainer: {
+    flex: 1,
   },
 });

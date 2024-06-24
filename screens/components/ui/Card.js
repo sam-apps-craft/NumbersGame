@@ -1,18 +1,15 @@
 import { StyleSheet, View } from "react-native";
 import Colors from "../../constants/colors";
 
-function Card ({children}){
-
-    <View style={styles.card}>{children}</View>
-
-    return
+function Card({ children }) {
+  return <View style={styles.card}>{children}</View>;
 }
 
 export default Card;
 
 const styles = StyleSheet.create({
   card: {
-    justifyContent:'center',
+    justifyContent: "center",
     alignItems: "center",
     marginTop: 36,
     marginHorizontal: 24,
