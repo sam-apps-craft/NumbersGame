@@ -29,7 +29,7 @@ function GameScreen({ userNumber, onGameOver }) {
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGameOver();
+      onGameOver(guessRounds.length);
     }
   }, [currentGuess, userNumber, onGameOver]);
 
@@ -78,19 +78,19 @@ function GameScreen({ userNumber, onGameOver }) {
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-              <Ionicons name='remove-circle-sharp' size={24} color="white" />
+              <Ionicons name="remove-circle-sharp" size={24} color="white" />
             </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-              <Ionicons name='add-circle-sharp' size={24} color="white" />
+              <Ionicons name="add-circle-sharp" size={24} color="white" />
             </PrimaryButton>
           </View>
         </View>
       </Card>
       <View style={styles.listContainer}>
-
         <FlatList
+          alwaysBounceHorizontal={false}
           data={guessRounds}
           renderItem={(itemData) => (
             <GuessLogItem
