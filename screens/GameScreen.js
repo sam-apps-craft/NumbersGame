@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import { View, StyleSheet, Alert, Text, FlatList } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
+import NumberContainer from "./components/game/NumberContainer";
+import Card from "./components/ui/Card";
+import InstructionText from "./components/ui/InstructionText";
+import PrimaryButton from "./components/ui/PrimaryButton";
 import Title from "./components/ui/Title";
-import NumberContainer from "./components/game/NumberContainer.js";
-import PrimaryButton from "./components/ui/PrimaryButton.js";
-import Card from "./components/ui/Card.js";
-import InstructionText from "./components/ui/InstructionText.js";
-import GuessLogItem from "./components/game/GuessLogItem.js";
+import GuessLogItem from "./components/game/GuessLogItem";
 
-function generateRandomNumberBetweeen(min, max, exclude) {
+function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
 
   if (rndNum === exclude) {
-    return generateRnadomNumberBetween(min, max, exclude);
+    return generateRandomBetween(min, max, exclude);
   } else {
     return rndNum;
   }
@@ -23,7 +23,7 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 function GameScreen({ userNumber, onGameOver }) {
-  const initialGuess = generateRandomNumberBetweeen(1, 100, userNumber);
+  const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
@@ -39,59 +39,57 @@ function GameScreen({ userNumber, onGameOver }) {
   }, []);
 
   function nextGuessHandler(direction) {
+    // direction => 'lower', 'greater'
     if (
       (direction === "lower" && currentGuess < userNumber) ||
       (direction === "greater" && currentGuess > userNumber)
     ) {
-      Alert.alert(
-        "Do not lie!",
-        "You know that this is worng..."[{ text: "Sorry", style: "cancel" }]
-      );
-
+      Alert.alert("Don't lie!", "You know that this is wrong...", [
+        { text: "Sorry!", style: "cancel" },
+      ]);
       return;
     }
+
     if (direction === "lower") {
       maxBoundary = currentGuess;
     } else {
       minBoundary = currentGuess + 1;
     }
-    const newRndNumber = generateRandomNumberBetweeen(
+
+    const newRndNumber = generateRandomBetween(
       minBoundary,
       maxBoundary,
       currentGuess
     );
-
     setCurrentGuess(newRndNumber);
-    setGuessRounds((previousGuessRounds) => [
-      newRndNumber,
-      ...previousGuessRounds,
-    ]);
+    setGuessRounds((prevGuessRounds) => [newRndNumber, ...prevGuessRounds]);
   }
 
   const guessRoundsListLength = guessRounds.length;
 
   return (
     <View style={styles.screen}>
-      <Title> Opponent's Guess</Title>
+      <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText style={styles.instructionsText}>
-          Higher or lower ?
+        <InstructionText style={styles.instructionText}>
+          Higher or lower?
         </InstructionText>
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-              <Ionicons name="remove-circle-sharp" size={24} color="white" />
+              <Ionicons name='remove-circle-sharp' size={24} color="white" />
             </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-              <Ionicons name="add-circle-sharp" size={24} color="white" />
+              <Ionicons name='add-circle-sharp' size={24} color="white" />
             </PrimaryButton>
           </View>
         </View>
       </Card>
-      <View>
+      <View style={styles.listContainer}>
+
         <FlatList
           data={guessRounds}
           renderItem={(itemData) => (
@@ -112,17 +110,19 @@ export default GameScreen;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 22,
+    padding: 24,
   },
-  instructionsText: {
+  instructionText: {
     marginBottom: 12,
   },
-
   buttonsContainer: {
     flexDirection: "row",
   },
-
   buttonContainer: {
     flex: 1,
+  },
+  listContainer: {
+    flex: 1,
+    padding: 16,
   },
 });
